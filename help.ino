@@ -109,7 +109,4 @@ void blinkLeft(bool frontLight) {
       delay(333);
     }
   }
-  endless = false;
-  delay(500);
-  endless = false;
 }
