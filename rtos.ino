@@ -106,9 +106,10 @@ void lcd_speed(void *param) {
   (void) param;
   while (1) {
    //something to measure the speed and save it to currentSpeed variable
+  }
 }
 
-void led_cntrl (void *param) {
+void led_cntrl(void *param) {
   (void) param;
   while (1) {
     //i will do that later cause its big code and i dont want to make the thing too long if i dont have speedometer
