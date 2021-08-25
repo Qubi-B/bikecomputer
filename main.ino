@@ -177,8 +177,7 @@ void led_cntrl(void *param) {
 //        break;
 //    }
     
-    bool first = false;
-    bool secon = false;
+    bool back  = false;
 
     //check if the front light should be on
     if (digitalRead(lightButton) == LOW) {                          //if(digitalRead(lightButton)){
@@ -186,28 +185,31 @@ void led_cntrl(void *param) {
         frontLight = false;                                         //}
         Serial.println("set front to false in void loop");          //else{
         delay(500);                                                 //  frontLight = false;
+        back = true;
       }                                                             //}
       else if (frontLight == false) {
         frontLight = true;
         Serial.println("set front to true in void loop");
         delay(500);
+        back = true;
       }
     }
     //check if user wants to get right blinker on
     if (digitalRead(rightBlinker) == LOW) {
       blinkRight(frontLight);
       //delay(1000);
-      first = true;
+      back = true;
     }
     //check if left blinker is needed
     if (digitalRead(leftBlinker) == LOW) {
       blinkLeft(frontLight);
       //delay(1000);
-      secon = true;
+      back = true;
     }
-    if (!first && !secon) {
+    if (back == true){
       backToNormal(frontLight);
       delay(500);
+      back = false;
     }
     delay(random(1, 3));
   }
@@ -388,6 +390,7 @@ void backToNormal(bool lightOn) {
     leds[5] = CRGB(128, 0, 0);
     leds[9] = CRGB(128, 0, 0);
     FastLED.show();
+    delay(random(1,3));
   }
   else {
     leds[2] = CRGB(0, 0, 0);
@@ -404,6 +407,7 @@ void backToNormal(bool lightOn) {
     leds[5] = CRGB(128, 0, 0);
     leds[9] = CRGB(128, 0, 0);
     FastLED.show();
+    delay(random(1,3));
   }
 }
 
