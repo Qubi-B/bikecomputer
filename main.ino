@@ -1,3 +1,5 @@
+//local (for me only!): Z:\!projekty\rower\firmware\sketch_oct22a
+
 #include "Arduino.h"
 #include <Arduino_FreeRTOS.h>
 #include <LiquidCrystal.h>
@@ -54,7 +56,7 @@ int pinState = LOW;
 int oldpinState = LOW;
 //int sawPulse = 1;
 //bool chosen = false;
-bool frontLight = false;
+bool frontLight = true; //if front lights should be on by default or not
 ///////////////////////////////////////////////
 
 ///////////////////////////////////////////////
@@ -108,6 +110,7 @@ void setup() {
   Serial.println("Setup done! \n----------------- \n");
 }
 
+
 void loop() {
   // no code here
 }
@@ -118,6 +121,7 @@ void lcd_speed(void *param) {
   unsigned long lastTime;
   unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
   unsigned long debounceDelay = 50;    // the debounce time "DarwinWasWrong #4059 — Dziś o 04:51 @h-bi_h I calculate that 100 ms is 144k/h if the sensor hits at that rate"
+  unsigned long zeroDelay = 2000;      //delay after which the value should be zero if there are no impulses
   float currentspeed;
   while (1) {
     int reading = digitalRead(sensorPin);
@@ -137,6 +141,9 @@ void lcd_speed(void *param) {
 
         }
       }
+    }
+    if ((millis() - lastDebounceTime) > zeroDelay){
+      currentSpeed = 0;
     }
 
     oldpinState = reading;
@@ -196,13 +203,17 @@ void led_cntrl(void *param) {
     }
     //check if user wants to get right blinker on
     if (digitalRead(rightBlinker) == LOW) {
-      blinkRight(frontLight);
+      for(int r = 0; r < 5; r++){
+        blinkRight(frontLight);
+      }
       //delay(1000);
       back = true;
     }
     //check if left blinker is needed
     if (digitalRead(leftBlinker) == LOW) {
-      blinkLeft(frontLight);
+      for(int r = 0; r < 5; r++){
+        blinkLeft(frontLight);
+      }
       //delay(1000);
       back = true;
     }
